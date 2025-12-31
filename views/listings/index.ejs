@@ -1,31 +1,131 @@
-<% layout("/layouts/boilerplate") %>
-  <body>
-    <h3>All Listings</h3>
-    <!-- <form method="GET" action="/listings/new">
-      <button>Create New Listing</button>
-    </form> --> 
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-  <% for (let listing of allListings){ %>
-    <a href="/listings/<%= listing._id %>" class="listing-link">
-    <div class="listing-card col" ">
-  <img src='<%= listing.Image %>' class="card-img-top" alt="listing_image" style="height: 20rem;"/>
-  <div class="card-img-overlay"></div>
-  <div class="card-body">
-    <p class="card-text">
-      
-      <b><% if (listing.price) { %>
-  &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
-<% } %></b><br>
-    </p>
+<% layout('layouts/boilerplate') %>
+<style>
+    #filters{
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+    .filter{
+        text-align: center;
+        margin-top: 2rem;
+        margin-right: 3rem;
+        opacity: 0.7;
+    }
+    .filter:hover{
+        opacity: 1;
+    }
+    .filter p {
+        font-size: 0.8rem;
+    }
+    .tax-info{
+        display: none;
+    }
+    .tax-toggle{
+        border: 1px solid black;
+        border-radius: 1rem;
+        height: 3.5rem;
+        padding: 1rem;
+        margin-left: 5rem;
+        display: flex;
+        align-items: center;
+        
+
+
+    }
+</style>
+    <body>
+        <div id="filters">
+            <div class="filter">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>trending</p>
+         </div>
+         <div class="filter">
+                <div><i class="fa-solid fa-bed"></i></div>
+            <p>rooms</p>
+         </div>
+         <div class="filter">
+                <div><i class="fa-solid fa-mountain-city"></i></div>
+            <p>iconic city</p>
+            </div>
+            <div class="filter">
+                <div><i class="fa-solid fa-mountain"></i></div>
+            <p>mountains</p>
+         </div>
+            <div class="filter">
+                <div><i class="fa-brands fa-fort-awesome"></i></div>
+            <p>castles</p>
+         </div>
+         <div class="filter">
+                <div><i class="fa-solid fa-water-ladder"></i></div>
+            <p>amazing pool</p>
+         </div>
+         <div class="filter">
+                <div><i class="fa-solid fa-campground"></i></div>
+            <p>camping</p>
+         </div>
+         <div class="filter">
+                <div><i class="fa-solid fa-cow"></i></div>
+            <p>farms</p>
+         </div>
+         <div class="filter">
+                <div><i class="fa-solid fa-snowflake"></i></div>
+            <p>Arctic</p>
+         </div>
+         <div class="tax-toggle">       
+              <div class="form-check form-switch form-check-reverse checkbtn">
+  <input class="form-check-input" type="checkbox" id="switchCheckReverse">
+  <label class="form-check-label" for="switchCheckReverse">Display total after taxes</label>
   </div>
-</div>
-</a>
-<% } %>
 
 </div>
-
-    
-    
-   
-  </body>
-
+        </div>
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+            <% for(let listing of allListings){ %>
+                <a href="/listings/<%= listing._id %>" class="listing-link">
+                <div class="listing-card col" >
+                     <!-- <div class="card-img-overlay"></div> -->
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_images" style="height: 20rem;">
+                    <div class="card-body">
+                        <p class="card-text"><b><%= listing.title %></b><br>
+                            &#8377;<%=listing.price.toLocaleString("en-NI") %>/night
+                            <i class="tax-info">+18% GST</i>
+                        </p>
+                    </div>
+                </div>
+             </a>
+                <%}%>
+        </div>
+        <!-- <script>
+          let taxSwitch = document.getElementById("switchCheckReverse");
+          taxSwitch.addEventListener("click",()=>{
+            let taxInfo = document.getElementsByClassName("tax-info") ;
+            for(info of taxInfo){
+                if(info.style.display != "inline"){
+                     info.style.display ="inline";
+                }else{
+                    info.style.display="none";
+                }
+               
+            }
+            
+          })
+        </script> -->
+        <script>
+  let taxSwitch = document.getElementById("switchCheckReverse");
+  taxSwitch.addEventListener("click", () => {
+    let taxInfo = document.getElementsByClassName("tax-info");
+    for (let info of taxInfo) { // Added 'let' to define info
+      if (info.style.display != "inline") {
+        info.style.display = "inline";
+      } else {
+        info.style.display = "none";
+      }
+    }
+  });
+</script>
+        <!-- <% for(let listing of allListings){ %>
+            <ul>
+                <li><a href="/listings/<%= listing._id %>"><%= listing.title %></a></li>
+            </ul>
+    <%}%> -->
+    </body>
