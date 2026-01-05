@@ -53,6 +53,7 @@ module.exports.
 module.exports.isReviewAuthor= async(req,res,next)=>{
   let { id,reviewId } = req.params;
   const listing = await Listing.findById(id);
+  const review = await Review.findById(reviewId);// this is added at last
   if(!review.author.equals(res.locals.currUser._id)){
     req.flash("error","you are not allowed to perform the task");
     return res.redirect(`/listings/${id}`);

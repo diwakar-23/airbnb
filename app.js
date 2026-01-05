@@ -1,6 +1,9 @@
 if (process.env.NODE_ENV != "production")  {
   require('dotenv').config();
+
 }
+
+// const MongoStore = require('connect-mongo');
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -9,6 +12,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError= require("./utils/ExpressError.js");
 const session = require("express-session");
+// const MongoStore = require('connect-mongo');
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -55,8 +59,27 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static("public"));
 app.use(express.static(path.join(__dirname,"public")));
+
+
+// const secret = "mysecretcode";
+// console.log(dbUrl);
+// console.log("Database URL found:", dbUrl ? "Yes (Hidden for security)" : "NO - Check .env file");
+// const store = MongoStore.create({
+//   mongoUrl:dbUrl,
+//   crypto:{
+//     secret:"secret",
+//     // secret: process.env.SECRET || "mysupersceretcode",
+//   },
+//   touchAfter:24*3600,
+// });
+
+// store.on("error",()=>{
+//   console.log("ERROR in MONGO SESSION STORE",err);
+// });
+
 const sessionOptions = {
-  secret: "mysecretcode", // use a better secret
+  // store,
+  secret: process.env.SECRET, // use a better secret
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -66,6 +89,7 @@ const sessionOptions = {
     // secure: true  // uncomment in production (requires HTTPS)
   }
 };
+
 
 
 app.use(session(sessionOptions));
@@ -131,6 +155,9 @@ app.use((req, res, next) => {
 });
 
  app.use((err,req,res,next) =>{
+  if (res.headersSent) {
+    return next(err);
+  }
   let {statusCode=500, message="Something Went Wrong"} = err;
   res.status(statusCode).render("error.ejs",{message});
 
