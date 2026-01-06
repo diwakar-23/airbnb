@@ -118,9 +118,10 @@ app.use((req,res,next)=>{
 //  res.send(registeredUser);
 // });
 
-// app.get("/", (req, res) => {
-//   res.send("Hi, I am root");
-// });
+app.get("/", (req, res) => {
+  // res.send("Hi, I am root");
+  res.redirect("/listings");
+});
 
 
 
