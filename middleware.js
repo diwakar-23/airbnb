@@ -34,18 +34,18 @@ module.exports.
    let{error} =listingSchema.validate(req.body);
   if (error){
     let errMsg = error.details.map((el)=>el.message).join(",")
-    throw new ExpressError(400,errMsg);
+   return next (new ExpressError(400,errMsg));
   }else{
     next()
-  ;}
+  }
 };
-module.exports.
 //for server side handling
+module.exports.
  validateReview = (req,res,next) =>{
    let{error} =reviewSchema.validate(req.body);
   if (error){
     let errMsg = error.details.map((el)=>el.message).join(",")
-    throw new ExpressError(400,errMsg);
+   return next (new ExpressError(400,errMsg));
   }else{
     next()
   }
@@ -58,5 +58,5 @@ module.exports.isReviewAuthor= async(req,res,next)=>{
     req.flash("error","you are not allowed to perform the task");
     return res.redirect(`/listings/${id}`);
   }
-  next();
+  next()
 };

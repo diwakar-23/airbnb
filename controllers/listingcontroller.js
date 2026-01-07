@@ -1,5 +1,5 @@
 const Listing = require("../models/listing");
-module.exports.index =async (req, res) => {
+module.exports.index =async (req, res,next) => {
   // Listing.find({}).then((res) =>{
   //   console.log(res);
   // });
@@ -11,7 +11,7 @@ module.exports.index =async (req, res) => {
  module.exports.newFormrender = (req,res)=>{
     res.render("listings/new.ejs");
 };
-module.exports.showListing = async(req,res)=>{
+module.exports.showListing = async(req,res,next)=>{
     const {id} = req.params;
     
     const listing = await Listing.findById(id)
@@ -28,7 +28,7 @@ module.exports.showListing = async(req,res)=>{
     res.render("listings/show.ejs",{listing})
 };
 
-module.exports.createListing = async(req,res)=>{
+module.exports.createListing = async(req,res,next)=>{
     let url = req.file.path;
     let filename = req.file.filename;
 let newlisting = new Listing(req.body.listing);
@@ -42,7 +42,7 @@ req.flash("success","New listing created !");
 res.redirect("/listings");
 };
 
-module.exports.editListing = async(req,res)=>{
+module.exports.editListing = async(req,res,next)=>{
         // console.log(req.body);
     const {id} = req.params;
     const listing = await Listing.findById(id);
@@ -51,7 +51,7 @@ module.exports.editListing = async(req,res)=>{
     res.render("listings/edit.ejs",{listing,listingOriginalUrl});
 };
 
-module.exports.updateListing = async (req, res) => {
+module.exports.updateListing = async (req, res,next) => {
   let { id } = req.params;
   let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
@@ -67,7 +67,7 @@ module.exports.updateListing = async (req, res) => {
   res.redirect(`/listings/${id}`);
 };
 
-module.exports.destroyListing = async (req, res) => {
+module.exports.destroyListing = async (req, res,next) => {
   let { id } = req.params;
   let deletedListing = await Listing.findByIdAndDelete(id);
   console.log(deletedListing);
